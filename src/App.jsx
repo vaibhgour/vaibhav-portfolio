@@ -1,3 +1,4 @@
+import { useState } from "react"
 
 const skills = {
   Backend: ['Java', 'Spring Boot', 'Spring Security', 'REST APIs'],
@@ -15,6 +16,7 @@ const navigation = [
 ]
 
 function SectionHeading({ number, children }) {
+
   return (
     <div className="mb-8 flex items-center gap-4">
       <span className="font-mono text-sm text-teal-300">{number}</span>
@@ -27,30 +29,93 @@ function SectionHeading({ number, children }) {
 }
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+
   return (
     <div className="min-h-screen bg-[#0b1120] text-slate-300">
-      <header className="sticky top-0 z-10 border-b border-slate-800/80 bg-[#0b1120]/95 backdrop-blur">
-        <nav
-          aria-label="Main navigation"
-          className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8"
-        >
-          <a href="#home" className="font-mono text-lg font-bold text-teal-300">
-            gour<span className="text-slate-100">.dev</span>
-          </a>
+      
+<header className="sticky top-0 z-20 border-b border-slate-800/80 bg-[#0b1120]/95 backdrop-blur">
+  <nav
+    aria-label="Main navigation"
+    className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8"
+  >
+    <a
+      href="#home"
+      onClick={() => setMenuOpen(false)}
+      className="font-mono text-lg font-bold text-teal-300"
+    >
+      Vaibhav <span className="text-slate-100">Gour</span>
+    </a>
 
-          <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-sm">
-            {navigation.map(([label, href]) => (
-              <a
-                key={href}
-                href={href}
-                className="transition-colors hover:text-teal-300"
-              >
-                {label}
-              </a>
-            ))}
-          </div>
-        </nav>
-      </header>
+    {/* Desktop navigation */}
+    <div className="hidden items-center gap-6 text-sm md:flex">
+      {navigation.map(([label, href]) => (
+        <a
+          key={href}
+          href={href}
+          className="transition-colors hover:text-teal-300"
+        >
+          {label}
+        </a>
+      ))}
+    </div>
+
+    {/* Mobile menu button */}
+    <button
+      type="button"
+      className="inline-flex items-center justify-center rounded-md border border-slate-700 p-2 text-slate-200 hover:border-teal-300 hover:text-teal-300 md:hidden"
+      aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+      aria-expanded={menuOpen}
+      aria-controls="mobile-navigation"
+      onClick={() => setMenuOpen((open) => !open)}
+    >
+      {menuOpen ? (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="h-5 w-5"
+        >
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      ) : (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="h-5 w-5"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      )}
+    </button>
+
+    {/* Mobile dropdown */}
+    {menuOpen && (
+      <div
+        id="mobile-navigation"
+        className="absolute left-0 right-0 top-full border-b border-slate-800 bg-[#0b1120] px-5 py-3 shadow-xl md:hidden"
+      >
+        {navigation.map(([label, href]) => (
+          <a
+            key={href}
+            href={href}
+            onClick={() => setMenuOpen(false)}
+            className="block rounded-md px-3 py-3 text-sm text-slate-300 transition-colors hover:bg-slate-800 hover:text-teal-300"
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+    )}
+  </nav>
+</header>
+
 
       <main className="mx-auto max-w-5xl px-5 sm:px-8">
         <section
